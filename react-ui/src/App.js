@@ -1,39 +1,39 @@
-import React, { Component } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 class App extends Component {
   state = {
     hello: null,
     postgres: null,
-    error: null
-  }
+    error: null,
+  };
 
   componentDidMount() {
-    fetch('/api/hello')
+    fetch("/api/hello")
       .then(res => res.json())
       .then(data => {
-        this.setState({ hello: data })
-      })
+        this.setState({ hello: data });
+      });
 
-    fetch('/api/postgres')
+    fetch("/api/postgres")
       .then(res => {
         if (!res.ok) {
-          throw new Error(`/api/postgres HTTP status ${res.status}`)
+          throw new Error(`/api/postgres HTTP status ${res.status}`);
         }
 
-        return res
+        return res;
       })
       .then(res => res.json())
       .then(data => {
-        this.setState({ postgres: data })
+        this.setState({ postgres: data });
       })
       .catch(err => {
-        this.setState({ error: err.toString() })
-      })
+        this.setState({ error: err.toString() });
+      });
   }
   render() {
-    const { hello, postgres, error } = this.state
+    const { hello, postgres, error } = this.state;
 
     return (
       <div className="App">
@@ -46,8 +46,8 @@ class App extends Component {
         <p className="App-intro">{postgres}</p>
         <p className="App-intro">{error}</p>
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;
