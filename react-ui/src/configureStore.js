@@ -4,7 +4,12 @@ import rootReducer from "./reducers";
 
 const configureStore = () => {
   //logs action being dispatched and the next state
-  const middlewareEnhancer = applyMiddleware(loggerMiddleware);
+  const middlewares = [];
+  if (process.env === "development") {
+    middlewares.push(loggerMiddleware);
+  }
+  const middlewareEnhancer = applyMiddleware(...middlewares);
+
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
