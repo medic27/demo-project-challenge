@@ -30,7 +30,8 @@ const App = props => {
   const parseAndSaveJSON = () => {
     const jsonObj = JSON.parse(textInput.current.value);
     saveQuestionnaire(jsonObj);
-    responseMessage.current.value = "Saved.";
+    debugger;
+    responseMessage.current.innerText = "Saved.";
   };
 
   return (

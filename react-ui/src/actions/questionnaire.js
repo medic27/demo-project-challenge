@@ -1,13 +1,8 @@
-const POST_QUESTIONNAIRE = "POST_QUESTIONNAIRE";
-const RECEIVE_QUESTIONNAIRE = "RECEIVE_QUESTIONNAIRE";
-const GET_QUESTIONNAIRE = "GET_QUESTIONNAIRE";
+const POST_QUESTIONNAIRE_SUCCESS = "POST_QUESTIONNAIRE_SUCCESS";
+const GET_QUESTIONNAIRE_SUCCESS = "GET_QUESTIONNAIRE_SUCCESS";
 
 export const saveQuestionnaire = jsonObj => {
   return dispatch => {
-    dispatch({
-      type: POST_QUESTIONNAIRE,
-    });
-
     return fetch("/api/questionnaire", {
       method: "POST",
       headers: {
@@ -16,23 +11,31 @@ export const saveQuestionnaire = jsonObj => {
       },
       body: JSON.stringify(jsonObj),
     })
+      .then(response => response.text())
+      .then(id =>
+        dispatch({
+          type: POST_QUESTIONNAIRE_SUCCESS,
+          id: id,
+        }),
+      )
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+
+export const getQuestionnaire = id => {
+  return dispatch => {
+    return fetch(`/api/questionnaire/${id}`)
       .then(response => response.json())
-      .then(data => dispatch(receiveQuestionnaire(data)));
-  };
-};
-
-export const requestQuestionnaire = id => {
-  return {
-    type: GET_QUESTIONNAIRE,
-    //promise
-  };
-};
-
-export const receiveQuestionnaire = data => {
-  return {
-    type: RECEIVE_QUESTIONNAIRE,
-    payload: {
-      data,
-    },
+      .then(data =>
+        dispatch({
+          type: GET_QUESTIONNAIRE_SUCCESS,
+          data,
+        }),
+      )
+      .catch(error => {
+        console.log(error);
+      });
   };
 };
