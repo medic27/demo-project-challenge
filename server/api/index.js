@@ -1,7 +1,13 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
+const { db } = require("./../lib/database");
 
-router.use(require('./hello'))
-router.use(require('./postgres'))
+router.get("/api/questionnaire", function(req, res) {
+  res.send("GET request to the questionnaire");
+});
 
-module.exports = router
+router.post("/api/questionnaire", function(req, res) {
+  res.send(JSON.stringify('{"test":1}'));
+});
+
+module.exports = router;
