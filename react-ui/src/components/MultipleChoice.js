@@ -1,7 +1,16 @@
 import React from "react";
 import { css, StyleSheet } from "aphrodite";
+import { updateAnswers } from "./../actions/answers";
+import { connect } from "react-redux";
 
-const MultipleChoice = ({ text, options, questionIndex, sectionIndex }) => (
+const MultipleChoice = ({
+  updateAnswers,
+  text,
+  options,
+  questionIndex,
+  sectionIndex,
+  savedAnswer,
+}) => (
   <div>
     <p>{`${questionIndex + 1}. ${text}`}</p>
 
@@ -13,6 +22,10 @@ const MultipleChoice = ({ text, options, questionIndex, sectionIndex }) => (
             type="radio"
             value={optionObj.text}
             className={css(styles.input)}
+            onChange={e => {
+              updateAnswers(sectionIndex, questionIndex, e.target.value);
+            }}
+            checked={savedAnswer === optionObj.text}
           />
           {optionObj.text}
         </p>
@@ -21,7 +34,10 @@ const MultipleChoice = ({ text, options, questionIndex, sectionIndex }) => (
   </div>
 );
 
-export default MultipleChoice;
+export default connect(
+  null,
+  { updateAnswers },
+)(MultipleChoice);
 
 const styles = StyleSheet.create({
   input: {

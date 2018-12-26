@@ -4,6 +4,12 @@ import { saveToLocalStorage } from "./../utils";
 export const POST_ANSWERS_SUCCESS = "POST_ANSWERS_SUCCESS";
 export const UPDATE_ANSWERS = "UPDATE_ANSWERS";
 export const UPDATE_PII = "UPDATE_PII";
+export const SYNC_LOCAL_STORAGE = "SYNC_LOCAL_STORAGE";
+
+export const syncLocalStorage = answersJson => ({
+  type: SYNC_LOCAL_STORAGE,
+  data: answersJson,
+});
 
 //post answers to DB
 export const postAnswers = () => {

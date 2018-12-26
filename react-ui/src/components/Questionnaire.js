@@ -1,8 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { selectQuestionnaireData, selectQuestionnaireId } from "./../selectors";
+import {
+  selectQuestionnaireData,
+  selectQuestionnaireId,
+  selectAnswersData,
+} from "./../selectors";
 import { getQuestionnaire } from "./../actions/questionnaire";
-import { updatePii, postAnswers } from "./../actions/answers";
+import { updatePii, postAnswers, syncLocalStorage } from "./../actions/answers";
 import lifecycle from "react-pure-lifecycle";
 import { compose } from "recompose";
 import Section from "./Section";
@@ -13,6 +17,10 @@ const Questionnaire = props => {
     questionnaire: { displayName, sections },
     updatePii,
     postAnswers,
+    answers: {
+      by: { email, name },
+      sections: answerSections,
+    },
   } = props;
 
   const sectionsArray =
@@ -20,7 +28,11 @@ const Questionnaire = props => {
     sections.map((sectionObj, index) => (
       <div key={`${index}-key`}>
         <h4>{`Section ${index + 1}. ${sectionObj.displayName}`}</h4>
-        <Section sectionObj={sectionObj} sectionIndex={index} />
+        <Section
+          sectionObj={sectionObj}
+          sectionIndex={index}
+          answerSection={answerSections[index].answers}
+        />
       </div>
     ));
 
@@ -40,6 +52,7 @@ const Questionnaire = props => {
             name="name"
             className={css(styles.pii)}
             onChange={e => updatePii("name", e.target.value)}
+            value={name}
           />
         </p>
         <p>
@@ -49,6 +62,7 @@ const Questionnaire = props => {
             name="email"
             className={css(styles.pii)}
             onChange={e => updatePii("email", e.target.value)}
+            value={email}
           />
         </p>
       </section>
@@ -68,13 +82,18 @@ const mapStateToProps = state => {
   return {
     questionnaire: selectQuestionnaireData(state),
     questionnaireId: selectQuestionnaireId(state),
+    answers: selectAnswersData(state),
   };
 };
 
 const componentDidMount = props => {
-  const { getQuestionnaire, questionnaireId, match } = props;
+  const { getQuestionnaire, questionnaireId, match, syncLocalStorage } = props;
   const matchId = match.params.id;
   getQuestionnaire(matchId || questionnaireId);
+
+  const answersJsonString = window.localStorage.getItem("answers");
+  const jsonData = JSON.parse(answersJsonString).data;
+  syncLocalStorage(jsonData);
 };
 
 const methods = {
@@ -84,7 +103,7 @@ const methods = {
 export default compose(
   connect(
     mapStateToProps,
-    { getQuestionnaire, updatePii, postAnswers },
+    { getQuestionnaire, updatePii, postAnswers, syncLocalStorage },
   ),
   lifecycle(methods),
 )(Questionnaire);
@@ -96,6 +115,7 @@ const styles = StyleSheet.create({
   },
   pii: {
     marginLeft: 5,
+    fontSize: 14,
   },
   submitButton: {
     backgroundColor: "#4CAF50",

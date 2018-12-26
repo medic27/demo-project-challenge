@@ -22,10 +22,17 @@ router.post("/api/questionnaire", function(req, res) {
     .catch(error => res.status(500).send(error.message));
 });
 
+router.get("/api/answers/:id", function(req, res) {
+  const id = req.params.id;
+  db.one("SELECT answers FROM answers WHERE ID = $1 LIMIT 1", [id])
+    .then(data => res.status(200).send(JSON.stringify(data)))
+    .catch(err => res.status(500).send(err.message));
+});
+
 router.post("/api/answers", function(req, res) {
   const { name, email } = req.body.data;
   req.body.data.id = Buffer.from(`${name}${email}`).toString("base64");
-  req.body.data.date = JSON.stringify(new Date());
+  req.body.data.at = JSON.stringify(new Date());
 
   //UPSERT to update the questionnaire JSON if there is an ID conflict
   db.one(

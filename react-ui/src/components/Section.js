@@ -2,7 +2,7 @@ import React from "react";
 import Freetext from "./Freetext";
 import MultipleChoice from "./MultipleChoice";
 
-const Section = ({ sectionObj, sectionIndex }) => {
+const Section = ({ sectionObj, sectionIndex, answerSection }) => {
   const { questions } = sectionObj;
 
   const Questions = questions.map((questionObj, index) => {
@@ -14,6 +14,7 @@ const Section = ({ sectionObj, sectionIndex }) => {
           text={text}
           questionIndex={index}
           sectionIndex={sectionIndex}
+          savedAnswer={answerSection[index].answer}
           key={`freetext-${index}`}
         />
       );
@@ -24,6 +25,7 @@ const Section = ({ sectionObj, sectionIndex }) => {
         options={options}
         questionIndex={index}
         sectionIndex={sectionIndex}
+        savedAnswer={answerSection[index].answer}
         key={`mc-${index}`}
       />
     );

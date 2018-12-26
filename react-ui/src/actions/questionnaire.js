@@ -1,3 +1,5 @@
+import { CREATE_ANSWERS_OBJECT } from "./../reducers/answers";
+
 export const POST_QUESTIONNAIRE_SUCCESS = "POST_QUESTIONNAIRE_SUCCESS";
 export const GET_QUESTIONNAIRE_SUCCESS = "GET_QUESTIONNAIRE_SUCCESS";
 export const GET_QUESTIONNAIRE_INITIAL = "GET_QUESTIONNAIRE_INITIAL";
@@ -32,12 +34,15 @@ export const getQuestionnaire = id => {
     });
     return fetch(`/api/questionnaire/${id}`)
       .then(response => response.json())
-      .then(data =>
+      .then(data => {
         dispatch({
           type: GET_QUESTIONNAIRE_SUCCESS,
           data,
-        }),
-      )
+        });
+        dispatch({
+          type: CREATE_ANSWERS_OBJECT,
+        });
+      })
       .catch(error => {
         console.log(error);
       });

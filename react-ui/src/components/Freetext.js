@@ -3,7 +3,13 @@ import { css, StyleSheet } from "aphrodite";
 import { updateAnswers } from "./../actions/answers";
 import { connect } from "react-redux";
 
-const Freetext = ({ text, sectionIndex, questionIndex, updateAnswers }) => (
+const Freetext = ({
+  text,
+  sectionIndex,
+  questionIndex,
+  updateAnswers,
+  savedAnswer,
+}) => (
   <div className={css(styles.freetextContainer)}>
     <p>{`${questionIndex + 1}. ${text}`}</p>
     <div>
@@ -12,6 +18,7 @@ const Freetext = ({ text, sectionIndex, questionIndex, updateAnswers }) => (
         onChange={e => {
           updateAnswers(sectionIndex, questionIndex, e.target.value);
         }}
+        value={savedAnswer}
       />
     </div>
   </div>
@@ -29,5 +36,6 @@ const styles = StyleSheet.create({
   textarea: {
     width: 500,
     marginLeft: 20,
+    fontSize: 14,
   },
 });
