@@ -1,5 +1,6 @@
-const POST_QUESTIONNAIRE_SUCCESS = "POST_QUESTIONNAIRE_SUCCESS";
-const GET_QUESTIONNAIRE_SUCCESS = "GET_QUESTIONNAIRE_SUCCESS";
+export const POST_QUESTIONNAIRE_SUCCESS = "POST_QUESTIONNAIRE_SUCCESS";
+export const GET_QUESTIONNAIRE_SUCCESS = "GET_QUESTIONNAIRE_SUCCESS";
+export const GET_QUESTIONNAIRE_INITIAL = "GET_QUESTIONNAIRE_INITIAL";
 
 export const saveQuestionnaire = jsonObj => {
   return dispatch => {
@@ -25,7 +26,11 @@ export const saveQuestionnaire = jsonObj => {
 };
 
 export const getQuestionnaire = id => {
+  console.log("invoked getQuestionnaire");
   return dispatch => {
+    dispatch({
+      type: GET_QUESTIONNAIRE_INITIAL,
+    });
     return fetch(`/api/questionnaire/${id}`)
       .then(response => response.json())
       .then(data =>
