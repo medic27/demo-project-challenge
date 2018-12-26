@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS questionnaire(
 CREATE TABLE IF NOT EXISTS answers(
   id text not null PRIMARY KEY, 
   questionnaireId text not null, 
-  questions jsonb 
+  answers jsonb 
 );

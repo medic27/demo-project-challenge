@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { selectQuestionnaireData, selectQuestionnaireId } from "./../selectors";
 import { getQuestionnaire } from "./../actions/questionnaire";
-import { updatePii } from "./../actions/answers";
+import { updatePii, postAnswers } from "./../actions/answers";
 import lifecycle from "react-pure-lifecycle";
 import { compose } from "recompose";
 import Section from "./Section";
@@ -12,6 +12,7 @@ const Questionnaire = props => {
   const {
     questionnaire: { displayName, sections },
     updatePii,
+    postAnswers,
   } = props;
 
   const sectionsArray =
@@ -52,6 +53,13 @@ const Questionnaire = props => {
         </p>
       </section>
       <section>{sectionsArray}</section>
+      <section>
+        <button
+          className={css(styles.submitButton)}
+          onClick={() => postAnswers()}>
+          Submit Answers!
+        </button>
+      </section>
     </div>
   );
 };
@@ -76,7 +84,7 @@ const methods = {
 export default compose(
   connect(
     mapStateToProps,
-    { getQuestionnaire, updatePii },
+    { getQuestionnaire, updatePii, postAnswers },
   ),
   lifecycle(methods),
 )(Questionnaire);
@@ -84,8 +92,19 @@ export default compose(
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 30,
+    paddingBottom: 30,
   },
   pii: {
     marginLeft: 5,
+  },
+  submitButton: {
+    backgroundColor: "#4CAF50",
+    border: "none",
+    color: "white",
+    padding: "15px 32px",
+    textAlign: "center",
+    textDecoration: "none",
+    display: "inline-block",
+    fontSize: 16,
   },
 });

@@ -22,4 +22,18 @@ router.post("/api/questionnaire", function(req, res) {
     .catch(error => res.status(500).send(error.message));
 });
 
+router.post("/api/answers", function(req, res) {
+  const { name, email } = req.body.data;
+  req.body.data.id = Buffer.from(`${name}${email}`).toString("base64");
+  req.body.data.date = JSON.stringify(new Date());
+
+  //UPSERT to update the questionnaire JSON if there is an ID conflict
+  db.one(
+    "INSERT INTO answers VALUES($1, $2, $3) ON CONFLICT (id) DO UPDATE SET answers = $3 RETURNING id",
+    [req.body.data.id, req.body.data.for, req.body.data],
+  )
+    .then(data => res.status(200).send(data.id))
+    .catch(error => res.status(500).send(error.message));
+});
+
 module.exports = router;

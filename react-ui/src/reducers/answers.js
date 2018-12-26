@@ -22,7 +22,7 @@ const answersReducer = (prevState = INITIAL_STATE, action) => {
           id: "",
           by: { name: "", email: "" },
           at: "",
-          for: "",
+          for: action.data.questions.id,
           sections: [],
         },
       };
