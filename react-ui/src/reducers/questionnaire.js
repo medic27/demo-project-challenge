@@ -6,9 +6,9 @@ import {
 
 const INITIAL_STATE = { data: {}, id: null, status: "" };
 
-const questionnaire = (prevState = INITIAL_STATE, action) =>
+const questionnaireReducer = (prevState = INITIAL_STATE, action) =>
   produce(prevState, draft => {
-    // disable because we don't need a default switch case with produce() since it will return the prevState
+    // disable eslint for default switch case since with immer/produce it will return the prevState automatically if draft object isn't modified
     // eslint-disable-next-line
     switch (action.type) {
       case POST_QUESTIONNAIRE_SUCCESS:
@@ -16,9 +16,9 @@ const questionnaire = (prevState = INITIAL_STATE, action) =>
         draft.id = action.id;
         break;
       case GET_QUESTIONNAIRE_SUCCESS:
-        draft.data = action.data;
+        draft.data = action.data ? action.data.questions : draft.data;
         break;
     }
   });
 
-export default questionnaire;
+export default questionnaireReducer;

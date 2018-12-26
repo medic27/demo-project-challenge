@@ -1,11 +1,12 @@
-import loggerMiddleware from "./middleware/logger";
+// import loggerMiddleware from "./middleware/logger";
 import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers";
 
 const configureStore = () => {
   //logs action being dispatched and the next state
-  const middlewares = [loggerMiddleware, thunk];
+  const middlewares = [thunk];
+  // middleswares.push(loggerMiddleware);
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const composeEnhancers =

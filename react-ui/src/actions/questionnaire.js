@@ -26,7 +26,6 @@ export const saveQuestionnaire = jsonObj => {
 };
 
 export const getQuestionnaire = id => {
-  console.log("invoked getQuestionnaire");
   return dispatch => {
     dispatch({
       type: GET_QUESTIONNAIRE_INITIAL,

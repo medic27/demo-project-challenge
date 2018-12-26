@@ -13,3 +13,8 @@ export const isJson = item => {
 
   return false;
 };
+
+export const saveToLocalStorage = getState => {
+  const answersJson = getState().answers;
+  window.localStorage.setItem("answers", JSON.stringify(answersJson));
+};
