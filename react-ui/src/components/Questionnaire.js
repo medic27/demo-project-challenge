@@ -4,6 +4,7 @@ import {
   selectQuestionnaireData,
   selectQuestionnaireId,
   selectAnswersData,
+  selectAnswersStatus,
 } from "./../selectors";
 import { getQuestionnaire } from "./../actions/questionnaire";
 import { updatePii, postAnswers, syncLocalStorage } from "./../actions/answers";
@@ -21,20 +22,27 @@ const Questionnaire = props => {
       by: { email, name },
       sections: answerSections,
     },
+    answersStatus,
   } = props;
 
   const sectionsArray =
     sections &&
-    sections.map((sectionObj, index) => (
-      <div key={`${index}-key`}>
-        <h4>{`Section ${index + 1}. ${sectionObj.displayName}`}</h4>
-        <Section
-          sectionObj={sectionObj}
-          sectionIndex={index}
-          answerSection={answerSections[index].answers}
-        />
-      </div>
-    ));
+    sections.map((sectionObj, index) => {
+      let answerSection;
+      if (answerSections.length) {
+        answerSection = answerSections[index].answers;
+      }
+      return (
+        <div key={`${index}-key`}>
+          <h4>{`Section ${index + 1}. ${sectionObj.displayName}`}</h4>
+          <Section
+            sectionObj={sectionObj}
+            sectionIndex={index}
+            answerSection={answerSection}
+          />
+        </div>
+      );
+    });
 
   return (
     <div className={css(styles.container)}>
@@ -71,7 +79,7 @@ const Questionnaire = props => {
         <button
           className={css(styles.submitButton)}
           onClick={() => postAnswers()}>
-          Submit Answers!
+          {answersStatus === "submitted" ? "Submitted!" : "Submit Answers"}
         </button>
       </section>
     </div>
@@ -83,6 +91,7 @@ const mapStateToProps = state => {
     questionnaire: selectQuestionnaireData(state),
     questionnaireId: selectQuestionnaireId(state),
     answers: selectAnswersData(state),
+    answersStatus: selectAnswersStatus(state),
   };
 };
 
@@ -90,10 +99,6 @@ const componentDidMount = props => {
   const { getQuestionnaire, questionnaireId, match, syncLocalStorage } = props;
   const matchId = match.params.id;
   getQuestionnaire(matchId || questionnaireId);
-
-  const answersJsonString = window.localStorage.getItem("answers");
-  const jsonData = JSON.parse(answersJsonString).data;
-  syncLocalStorage(jsonData);
 };
 
 const methods = {

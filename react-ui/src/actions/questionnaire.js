@@ -1,4 +1,5 @@
 import { CREATE_ANSWERS_OBJECT } from "./../reducers/answers";
+import { SYNC_LOCAL_STORAGE } from "./answers";
 
 export const POST_QUESTIONNAIRE_SUCCESS = "POST_QUESTIONNAIRE_SUCCESS";
 export const GET_QUESTIONNAIRE_SUCCESS = "GET_QUESTIONNAIRE_SUCCESS";
@@ -41,7 +42,18 @@ export const getQuestionnaire = id => {
         });
         dispatch({
           type: CREATE_ANSWERS_OBJECT,
+          data,
         });
+
+        const answersJsonString = window.localStorage.getItem("answers");
+        const answersJson = JSON.parse(answersJsonString);
+        console.log("answersJson:", answersJson);
+        if (answersJson) {
+          dispatch({
+            type: SYNC_LOCAL_STORAGE,
+            data: answersJson,
+          });
+        }
       })
       .catch(error => {
         console.log(error);

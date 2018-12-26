@@ -7,6 +7,7 @@ const Section = ({ sectionObj, sectionIndex, answerSection }) => {
 
   const Questions = questions.map((questionObj, index) => {
     const { type, text, options } = questionObj;
+    const savedAnswer = answerSection ? answerSection[index].answer : "";
 
     if (type === "freetext") {
       return (
@@ -14,7 +15,7 @@ const Section = ({ sectionObj, sectionIndex, answerSection }) => {
           text={text}
           questionIndex={index}
           sectionIndex={sectionIndex}
-          savedAnswer={answerSection[index].answer}
+          savedAnswer={savedAnswer}
           key={`freetext-${index}`}
         />
       );
@@ -25,7 +26,7 @@ const Section = ({ sectionObj, sectionIndex, answerSection }) => {
         options={options}
         questionIndex={index}
         sectionIndex={sectionIndex}
-        savedAnswer={answerSection[index].answer}
+        savedAnswer={savedAnswer}
         key={`mc-${index}`}
       />
     );

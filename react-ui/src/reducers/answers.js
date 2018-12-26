@@ -19,20 +19,28 @@ const INITIAL_STATE = {
 
 const answersReducer = (prevState = INITIAL_STATE, action) => {
   switch (action.type) {
-    // when questionnaire is loaded into redux, we want to create a similarly structured answers object in redux in order for us to update the answers into it. However, we don't  want to conflict with SYNC_LOCAL_STORAGE here since it would destroy the data in there. We check the draft.localStorage property before doing this.
+    // when questionnaire is loaded into redux, we want to create a similarly structured answers object in redux in order for us to update the answers into it. However, we don't  want to conflict with SYNC_LOCAL_STORAGE here since it would destroy the data in there. We check the draft.localStorage property before doing this because we only need to sync the data once with localStorage.
     case CREATE_ANSWERS_OBJECT: {
       if (!prevState.localStorage) {
-        return createAnswersStructure(prevState, action);
+        const nextState = createAnswersStructure(prevState, action);
+        console.log("nextState in CREATE_ANSWERS_OBJECT: ", nextState);
+        return nextState;
       }
+      break;
     }
     case POST_ANSWERS_SUCCESS:
-      produce;
+      return produce(prevState, draft => {
+        draft.status = "submitted";
+      });
     case UPDATE_ANSWERS: {
       //we assume that we already have the answer structure by now
       const { sectionIndex, answersIndex, value } = action;
       return produce(prevState, draft => {
         // inject the answer value into the right place and immer will do the rest!
         draft.data.sections[sectionIndex].answers[answersIndex].answer = value;
+        if (draft.status === "submitted") {
+          draft.status = "edited";
+        }
       });
     }
     case UPDATE_PII: {
@@ -47,7 +55,7 @@ const answersReducer = (prevState = INITIAL_STATE, action) => {
     case SYNC_LOCAL_STORAGE: {
       const answersJson = action.data;
       const nextState = produce(prevState, draft => {
-        draft.data = answersJson;
+        draft.data = answersJson.data;
         draft.localStorage = true;
       });
       return nextState;
@@ -58,7 +66,7 @@ const answersReducer = (prevState = INITIAL_STATE, action) => {
   }
 };
 
-const createAnswersStructure = (_, action) => {
+const createAnswersStructure = (prevState, action) => {
   //We create the structure for answers sections based on the questionnaire structure. Once we have the structure, we can update individual answers given the section index and question index.
   const questionnaireSections = action.data.questions.sections;
 
