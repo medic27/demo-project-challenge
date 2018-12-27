@@ -4,6 +4,7 @@ import {
   UPDATE_PII,
   SYNC_LOCAL_STORAGE,
   POST_ANSWERS_SUCCESS,
+  GET_ANSWERS_SUCCESS,
 } from "./../actions/answers";
 export const CREATE_ANSWERS_OBJECT = "CREATE_ANSWERS_OBJECT";
 
@@ -52,6 +53,7 @@ const answersReducer = (prevState = INITIAL_STATE, action) => {
       });
     }
 
+    // careful here that local storage is not in bad state, otherwise it will crash when trying to update answers! --- this should be refactored so that it's more nimble
     case SYNC_LOCAL_STORAGE: {
       const answersJson = action.data;
       const nextState = produce(prevState, draft => {
@@ -59,6 +61,13 @@ const answersReducer = (prevState = INITIAL_STATE, action) => {
         draft.localStorage = true;
       });
       return nextState;
+    }
+
+    case GET_ANSWERS_SUCCESS: {
+      return produce(prevState, draft => {
+        const answersJson = action.data;
+        draft.data = answersJson.data;
+      });
     }
 
     default:

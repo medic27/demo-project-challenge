@@ -2,9 +2,10 @@ import React from "react";
 import "./../css/Home.css";
 import { connect } from "react-redux";
 import { saveQuestionnaire } from "../actions/questionnaire";
-import { questionnaire } from "../mockData";
 import { selectQuestionnaireId, selectQuestionnaireStatus } from "../selectors";
 import { css, StyleSheet } from "aphrodite";
+import { Link } from "react-router-dom";
+import { isJson } from "./../utils";
 
 const App = props => {
   const { saveQuestionnaire, questionnaireStatus, questionnaireId } = props;
@@ -14,6 +15,10 @@ const App = props => {
   const url = `http://localhost:3000/res/${questionnaireId}`;
 
   const parseAndSaveJSON = () => {
+    if (!isJson(textInput.current.value)) {
+      alert("Please enter a JSON object");
+      return;
+    }
     const jsonObj = JSON.parse(textInput.current.value);
     saveQuestionnaire(jsonObj);
   };
@@ -24,7 +29,6 @@ const App = props => {
         <textarea
           ref={textInput}
           placeholder="Paste your JSON here"
-          value={JSON.stringify(questionnaire)}
           className={css(styles.textarea)}
         />
       </div>
@@ -33,13 +37,16 @@ const App = props => {
           type="button"
           onClick={parseAndSaveJSON}
           value="Create Questionnaire from JSON"
+          style={{ fontSize: "20px" }}
         />
       </div>
       {displayResult && (
         <div>
           <p>JSON Questionnaire Saved to DB.</p>
           <p>You can use this URL to access the questionnaire:</p>
-          <p> {url} </p>
+          <p>
+            <Link to={`/res/${questionnaireId}`}>{url} </Link>{" "}
+          </p>
         </div>
       )}
     </div>

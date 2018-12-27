@@ -28,13 +28,15 @@ export const saveQuestionnaire = jsonObj => {
   };
 };
 
-export const getQuestionnaire = id => {
+export const getQuestionnaire = (id, respondentId) => {
   return dispatch => {
     dispatch({
       type: GET_QUESTIONNAIRE_INITIAL,
     });
     return fetch(`/api/questionnaire/${id}`)
-      .then(response => response.json())
+      .then(response => {
+        response.json();
+      })
       .then(data => {
         dispatch({
           type: GET_QUESTIONNAIRE_SUCCESS,
@@ -47,8 +49,7 @@ export const getQuestionnaire = id => {
 
         const answersJsonString = window.localStorage.getItem("answers");
         const answersJson = JSON.parse(answersJsonString);
-        console.log("answersJson:", answersJson);
-        if (answersJson) {
+        if (answersJson && !respondentId) {
           dispatch({
             type: SYNC_LOCAL_STORAGE,
             data: answersJson,

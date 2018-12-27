@@ -7,7 +7,8 @@ import {
   selectAnswersStatus,
 } from "./../selectors";
 import { getQuestionnaire } from "./../actions/questionnaire";
-import { updatePii, postAnswers, syncLocalStorage } from "./../actions/answers";
+import { getAnswers } from "./../actions/answers";
+import { updatePii, postAnswers } from "./../actions/answers";
 import lifecycle from "react-pure-lifecycle";
 import { compose } from "recompose";
 import Section from "./Section";
@@ -96,9 +97,11 @@ const mapStateToProps = state => {
 };
 
 const componentDidMount = props => {
-  const { getQuestionnaire, questionnaireId, match, syncLocalStorage } = props;
+  const { getQuestionnaire, questionnaireId, match } = props;
   const matchId = match.params.id;
-  getQuestionnaire(matchId || questionnaireId);
+  const respondentId = match.params.respondentid;
+  getQuestionnaire(matchId || questionnaireId, respondentId);
+  getAnswers(respondentId);
 };
 
 const methods = {
@@ -108,7 +111,7 @@ const methods = {
 export default compose(
   connect(
     mapStateToProps,
-    { getQuestionnaire, updatePii, postAnswers, syncLocalStorage },
+    { getQuestionnaire, updatePii, postAnswers, getAnswers },
   ),
   lifecycle(methods),
 )(Questionnaire);

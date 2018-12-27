@@ -1,6 +1,6 @@
-import produce from "immer";
 import { saveToLocalStorage } from "./../utils";
 
+export const GET_ANSWERS_SUCCESS = "GET_ANSWERS_SUCCESS";
 export const POST_ANSWERS_SUCCESS = "POST_ANSWERS_SUCCESS";
 export const UPDATE_ANSWERS = "UPDATE_ANSWERS";
 export const UPDATE_PII = "UPDATE_PII";
@@ -28,6 +28,22 @@ export const postAnswers = () => {
           type: POST_ANSWERS_SUCCESS,
         }),
       )
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
+
+export const getAnswers = () => {
+  return dispatch => {
+    return fetch(`/api/answers/:id`)
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_ANSWERS_SUCCESS,
+          data,
+        });
+      })
       .catch(error => {
         console.log(error);
       });
