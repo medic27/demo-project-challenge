@@ -16,6 +16,9 @@ import { css, StyleSheet } from "aphrodite";
 
 const Questionnaire = props => {
   const {
+    match: {
+      params: { respondentid },
+    },
     questionnaire: { displayName, sections, id },
     updatePii,
     postAnswers,
@@ -26,6 +29,7 @@ const Questionnaire = props => {
     answersStatus,
   } = props;
 
+  const disabled = respondentid ? true : false;
   const sectionsArray =
     sections &&
     sections.map((sectionObj, index) => {
@@ -40,6 +44,7 @@ const Questionnaire = props => {
             sectionObj={sectionObj}
             sectionIndex={index}
             answerSection={answerSection}
+            disabled={disabled}
           />
         </div>
       );
@@ -62,6 +67,7 @@ const Questionnaire = props => {
             className={css(styles.pii)}
             onChange={e => updatePii("name", e.target.value)}
             value={name}
+            disabled={disabled}
           />
         </p>
         <p>
@@ -72,6 +78,7 @@ const Questionnaire = props => {
             className={css(styles.pii)}
             onChange={e => updatePii("email", e.target.value)}
             value={email}
+            disabled={disabled}
           />
         </p>
       </section>
@@ -103,7 +110,9 @@ const componentDidMount = props => {
 
   // matchId is from url, questionnaireId is from
   getQuestionnaire(matchId || questionnaireId);
-  getAnswers(respondentId);
+  if (respondentId) {
+    getAnswers(respondentId);
+  }
 };
 
 const methods = {

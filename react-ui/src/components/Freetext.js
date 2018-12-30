@@ -9,6 +9,7 @@ const Freetext = ({
   questionIndex,
   updateAnswers,
   savedAnswer,
+  disabled,
 }) => (
   <div className={css(styles.freetextContainer)}>
     <p>{`${questionIndex + 1}. ${text}`}</p>
@@ -19,6 +20,7 @@ const Freetext = ({
           updateAnswers(sectionIndex, questionIndex, e.target.value);
         }}
         value={savedAnswer}
+        disabled={disabled}
       />
     </div>
   </div>

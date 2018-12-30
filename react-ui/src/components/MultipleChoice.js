@@ -10,6 +10,7 @@ const MultipleChoice = ({
   questionIndex,
   sectionIndex,
   savedAnswer,
+  disabled,
 }) => (
   <div>
     <p>{`${questionIndex + 1}. ${text}`}</p>
@@ -26,6 +27,7 @@ const MultipleChoice = ({
               updateAnswers(sectionIndex, questionIndex, e.target.value);
             }}
             checked={savedAnswer === optionObj.text}
+            disabled={disabled}
           />
           {optionObj.text}
         </p>

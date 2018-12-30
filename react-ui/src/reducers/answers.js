@@ -24,10 +24,9 @@ const answersReducer = (prevState = INITIAL_STATE, action) => {
     case CREATE_ANSWERS_OBJECT: {
       if (!prevState.localStorage) {
         const nextState = createAnswersStructure(prevState, action);
-        console.log("nextState in CREATE_ANSWERS_OBJECT: ", nextState);
         return nextState;
       }
-      break;
+      return prevState;
     }
     case POST_ANSWERS_SUCCESS:
       return produce(prevState, draft => {
@@ -50,6 +49,10 @@ const answersReducer = (prevState = INITIAL_STATE, action) => {
         piiType === "name"
           ? (draft.data.by.name = value)
           : (draft.data.by.email = value);
+
+        if (draft.status === "submitted") {
+          draft.status = "edited";
+        }
       });
     }
 

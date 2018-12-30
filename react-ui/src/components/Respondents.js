@@ -10,10 +10,10 @@ import { css, StyleSheet } from "aphrodite";
 const Respondents = ({ respondentData }) => {
   let listOfNames;
   if (respondentData && respondentData.length) {
-    listOfNames = respondentData.map(({ id, questionnaireid, name }) => (
-      <section>
+    listOfNames = respondentData.map(({ id, questionnaireid, name }, index) => (
+      <section key={`respondents-${index}`}>
         <p>
-          <Link to={`${questionnaireid}/${id}`}>{name}</Link>
+          <Link to={`/respondents/${questionnaireid}/${id}`}>{name}</Link>
         </p>
       </section>
     ));
