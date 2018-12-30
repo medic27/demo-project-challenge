@@ -6,8 +6,8 @@ import {
 
 const INITIAL_STATE = { data: {}, id: null, status: "" };
 
-const questionnaireReducer = (prevState = INITIAL_STATE, action) =>
-  produce(prevState, draft => {
+const questionnaireReducer = (prevState = INITIAL_STATE, action) => {
+  const nextState = produce(prevState, draft => {
     // disable eslint for default switch case since with immer/produce it will return the prevState automatically if draft object isn't modified
     // eslint-disable-next-line
     switch (action.type) {
@@ -20,5 +20,7 @@ const questionnaireReducer = (prevState = INITIAL_STATE, action) =>
         break;
     }
   });
+  return nextState;
+};
 
 export default questionnaireReducer;

@@ -34,9 +34,7 @@ export const getQuestionnaire = (id, respondentId) => {
       type: GET_QUESTIONNAIRE_INITIAL,
     });
     return fetch(`/api/questionnaire/${id}`)
-      .then(response => {
-        response.json();
-      })
+      .then(response => response.json())
       .then(data => {
         dispatch({
           type: GET_QUESTIONNAIRE_SUCCESS,
