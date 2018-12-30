@@ -6,7 +6,7 @@ Get posgresql (https://postgresapp.com/) if you don't already have it. Regarding
 2. `echo DATABASE_URL=postgres://yourusername:yourpassword@127.0.0.1:5432/somedatabase >> server/.env`
 3. `npm run start:dev`
 4. Go to `localhost:3000`
-5. List of respondents at `localhost:3000/respondents` (didn't have time to get the respondents answers to show unfortunately)
+5. List of respondents at `localhost:3000/respondents`
 
 I didn't have enough time to get it polished or add tests unfortunately. There are also a ton of things that can be refactored that didn't happen due to time constraints. The UI is very simple, I chose to go with localStorage for storing answers continuously. I didn't use typescript or flow but definitely would have if i had more time.
 

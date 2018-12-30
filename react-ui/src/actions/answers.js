@@ -12,10 +12,11 @@ export const syncLocalStorage = answersJson => ({
 });
 
 //post answers to DB
-export const postAnswers = () => {
+export const postAnswers = (questionnaireId, name) => {
   return (dispatch, getState) => {
     const answersJson = getState().answers;
-    return fetch("/api/answers", {
+    const url = `/api/answers?questionnaireId=${questionnaireId}&name=${name}`;
+    return fetch(url, {
       method: "POST",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -34,9 +35,9 @@ export const postAnswers = () => {
   };
 };
 
-export const getAnswers = () => {
+export const getAnswers = id => {
   return dispatch => {
-    return fetch(`/api/answers/:id`)
+    return fetch(`/api/answers?id=${id}`)
       .then(response => response.json())
       .then(data => {
         dispatch({

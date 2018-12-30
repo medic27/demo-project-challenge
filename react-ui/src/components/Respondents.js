@@ -5,27 +5,30 @@ import lifecycle from "react-pure-lifecycle";
 import { compose } from "recompose";
 import { selectRespondentData } from "./../selectors";
 import { Link } from "react-router-dom";
+import { css, StyleSheet } from "aphrodite";
 
-const Respondents = ({ respondentData }) => (
-  <div>
-    <header>
-      <h2> List of Respondents</h2>
-    </header>
-    <section>
-      {respondentData &&
-        respondentData.length &&
-        respondentData.map(data => {
-          return (
-            <section>
-              <p>
-                <Link to={`${data.id}/${data.questionnaireid}`}>{data.id}</Link>
-              </p>
-            </section>
-          );
-        })}
-    </section>
-  </div>
-);
+const Respondents = ({ respondentData }) => {
+  let listOfNames;
+  if (respondentData && respondentData.length) {
+    listOfNames = respondentData.map(({ id, questionnaireid, name }) => (
+      <section>
+        <p>
+          <Link to={`${questionnaireid}/${id}`}>{name}</Link>
+        </p>
+      </section>
+    ));
+  }
+  const noRespondents = "No respondents so far.";
+
+  return (
+    <div className={css(styles.container)}>
+      <header>
+        <h2> List of Respondents</h2>
+      </header>
+      <section>{listOfNames ? listOfNames : noRespondents}</section>
+    </div>
+  );
+};
 
 const componentDidMount = ({ getRespondents }) => {
   getRespondents();
@@ -46,3 +49,9 @@ export default compose(
   ),
   lifecycle(methods),
 )(Respondents);
+
+const styles = StyleSheet.create({
+  container: {
+    paddingLeft: 20,
+  },
+});

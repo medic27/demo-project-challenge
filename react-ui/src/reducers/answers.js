@@ -65,8 +65,7 @@ const answersReducer = (prevState = INITIAL_STATE, action) => {
 
     case GET_ANSWERS_SUCCESS: {
       return produce(prevState, draft => {
-        const answersJson = action.data;
-        draft.data = answersJson.data;
+        draft.data = action.data.answers;
       });
     }
 

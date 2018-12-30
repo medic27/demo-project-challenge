@@ -23,28 +23,30 @@ router.post("/api/questionnaire", function(req, res) {
     .catch(error => res.status(500).send(error.message));
 });
 
-router.get("/api/answers/:id", function(req, res) {
-  const id = req.params.id;
+router.get("/api/answers", function(req, res) {
+  const { id } = req.query;
   db.one("SELECT answers FROM answers WHERE ID = $1 LIMIT 1", [id])
     .then(data => res.status(200).send(JSON.stringify(data)))
     .catch(err => res.status(500).send(err.message));
 });
 
 router.post("/api/answers", function(req, res) {
-  req.body.data.id = uuidv1();
-  req.body.data.at = JSON.stringify(new Date());
+  const { questionnaireId, name } = req.query;
+  const answersJSON = req.body.data;
+  answersJSON.id = uuidv1();
+  answersJSON.at = JSON.stringify(new Date());
 
   //UPSERT to update only the questionnaire JSON if there is an ID conflict
   db.one(
-    "INSERT INTO answers VALUES($1, $2, $3) ON CONFLICT (id) DO UPDATE SET answers = $3 RETURNING id",
-    [req.body.data.id, req.body.data.for, req.body.data],
+    "INSERT INTO answers VALUES($1, $2, $3, $4) ON CONFLICT (id) DO UPDATE SET answers = $4 RETURNING id",
+    [answersJSON.id, questionnaireId, name, answersJSON],
   )
     .then(data => res.status(200).send(data.id))
     .catch(error => res.status(500).send(error.message));
 });
 
 router.get("/api/respondents", function(req, res) {
-  db.any("SELECT id, questionnaireId FROM answers")
+  db.any("SELECT id, questionnaireId, name FROM answers")
     .then(data => res.status(200).send(JSON.stringify(data)))
     .catch(err => res.status(500).send(err.message));
 });

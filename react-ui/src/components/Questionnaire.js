@@ -16,7 +16,7 @@ import { css, StyleSheet } from "aphrodite";
 
 const Questionnaire = props => {
   const {
-    questionnaire: { displayName, sections },
+    questionnaire: { displayName, sections, id },
     updatePii,
     postAnswers,
     answers: {
@@ -79,7 +79,7 @@ const Questionnaire = props => {
       <section>
         <button
           className={css(styles.submitButton)}
-          onClick={() => postAnswers()}>
+          onClick={() => postAnswers(id, name)}>
           {answersStatus === "submitted" ? "Submitted!" : "Submit Answers"}
         </button>
       </section>
@@ -97,10 +97,12 @@ const mapStateToProps = state => {
 };
 
 const componentDidMount = props => {
-  const { getQuestionnaire, questionnaireId, match } = props;
+  const { getQuestionnaire, questionnaireId, match, getAnswers } = props;
   const matchId = match.params.id;
   const respondentId = match.params.respondentid;
-  getQuestionnaire(matchId || questionnaireId, respondentId);
+
+  // matchId is from url, questionnaireId is from
+  getQuestionnaire(matchId || questionnaireId);
   getAnswers(respondentId);
 };
 
