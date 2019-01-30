@@ -1,4 +1,4 @@
-Hi, hopefully these instructions are suffient to get it running, if not, please don't hesistate to ask me.
+Instructions to get it running
 
 Get posgresql (https://postgresapp.com/) if you don't already have it. Regarding step 4, if you are using postgresapp, it defaults to port 5432, no password, and the same username as your logged in computer profile.
 
