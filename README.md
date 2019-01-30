@@ -15,8 +15,8 @@ Get posgresql (https://postgresapp.com/) if you don't already have it. Regarding
 5. List of respondents at `localhost:3000/respondents`
 
 Some of the tech used:
-Create React App in folder react-ui
-Express API backend with request logging in folder server
-Postgres database access with pg-promise
-Database setup and migration with postgrator
-HTTPS only when deployed to Heroku
+- Create React App in folder react-ui
+- Express API backend with request logging in folder server
+- Postgres database access with pg-promise
+- Database setup and migration with postgrator
+- HTTPS only when deployed to Heroku
