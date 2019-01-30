@@ -1,3 +1,9 @@
+This is a small project that let's you create surveys from a JSON object. It has the following features
+1. Generates a URL that can be shared with respondents to answer the survey
+2. Respondents can answer this survey and the results will be saved constantly / automatically (via syncing with localStorage)
+3. Has a page of the list of surveys that were answered 
+4. Has read-only mode of answered surveys
+
 Instructions to get it running
 
 Get posgresql (https://postgresapp.com/) if you don't already have it. Regarding step 4, if you are using postgresapp, it defaults to port 5432, no password, and the same username as your logged in computer profile.
