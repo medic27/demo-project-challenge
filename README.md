@@ -8,10 +8,7 @@ Get posgresql (https://postgresapp.com/) if you don't already have it. Regarding
 4. Go to `localhost:3000`
 5. List of respondents at `localhost:3000/respondents`
 
-I didn't have enough time to get it polished or add tests unfortunately. There are also a ton of things that can be refactored that didn't happen due to time constraints. The UI is very simple, I chose to go with localStorage for storing answers continuously. I didn't use typescript or flow but definitely would have if i had more time.
-
-Some tech used:
-NPM scripts for local development and Heroku deployments
+Some of the tech used:
 Create React App in folder react-ui
 Express API backend with request logging in folder server
 Postgres database access with pg-promise
