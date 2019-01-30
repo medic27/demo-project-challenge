@@ -1,5 +1,5 @@
 This is a small project that lets you create surveys from a JSON object. It has the following features
-1. Generates a URL that can be shared with respondents to answer the survey
+1. Generates a URL that can be shared with respondents to answer the survey (example of this JSON can be found in sampleJSON.md)
 2. Respondents can answer this survey and the results will be saved constantly / automatically (via syncing with localStorage)
 3. Has a page of the list of surveys that were answered 
 4. Has read-only mode of answered surveys
